@@ -2,35 +2,45 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: ¿el usuario autenticado es admin?
+    // ---- Helpers ----
+    function signedIn() { return request.auth != null; }
+
     function isAdmin() {
-      return request.auth != null &&
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    // Perfil de usuario: cada quien crea/lee el suyo. El rol solo lo cambia un admin
-    // (o manualmente desde la consola de Firebase para el primer admin).
+    // Perfil de usuario. Cada quien lee solo el suyo. Al crearse queda como
+    // 'visitor' obligatoriamente; el rol 'admin' solo lo puede poner otro admin
+    // (o vos manualmente desde la consola de Firebase para el primer admin).
     match /users/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow create: if request.auth != null && request.auth.uid == uid
-                    && request.resource.data.role == 'visitor';
+      allow read:   if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role == 'visitor'
+                    && request.resource.data.keys().hasOnly(['email', 'role']);
       allow update, delete: if isAdmin();
     }
 
-    // Contenido del torneo: lectura pública (visitantes), escritura solo admin.
+    // Contenido del torneo: lectura pública (visitantes no necesitan login),
+    // escritura únicamente para administradores.
     match /tournaments/{id} { allow read: if true; allow write: if isAdmin(); }
     match /teams/{id}       { allow read: if true; allow write: if isAdmin(); }
     match /players/{id}     { allow read: if true; allow write: if isAdmin(); }
 
     match /matches/{id} {
-      allow read: if true;
+      allow read:  if true;
       allow write: if isAdmin();
-      // Estadísticas por jugador dentro del partido
+
       match /stats/{playerId} {
-        allow read: if true;
+        allow read:  if true;
         allow write: if isAdmin();
       }
+    }
+
+    // Cualquier otra ruta no contemplada queda bloqueada por defecto.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
