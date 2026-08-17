@@ -2,10 +2,8 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// La configuración web de Firebase es pública por diseño (identifica el
-// proyecto, no da acceso). La seguridad real la dan las Reglas de Firestore
-// y App Check. Aun así la leemos de variables de entorno para no fijarla en
-// el repositorio. Deben cargarse en Vercel (Settings -> Environment Variables).
+// La config web de Firebase es pública por diseño. La seguridad la dan las
+// Reglas de Firestore. Se lee de variables de entorno (cargarlas en Vercel).
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -15,12 +13,33 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Firebase se inicializa SOLO en el navegador. Durante el build/prerender en
-// el servidor, db y auth valen null y no se usan (todas las llamadas ocurren
-// dentro de useEffect o manejadores de eventos, que corren en el cliente).
-const isClient = typeof window !== "undefined";
-const app = isClient ? (getApps().length ? getApp() : initializeApp(firebaseConfig)) : null;
+// ¿Están las variables de entorno cargadas?
+export const firebaseReady = Boolean(
+  firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId
+);
 
-export const db = app ? getFirestore(app) : null;
-export const auth = app ? getAuth(app) : null;
+const isClient = typeof window !== "undefined";
+
+let app = null;
+let db = null;
+let auth = null;
+
+// Solo inicializamos en el navegador y solo si hay configuración válida.
+// Envuelto en try/catch para que un error de config NUNCA rompa la página.
+if (isClient && firebaseReady) {
+  try {
+    app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+  } catch (e) {
+    console.error("[Firebase] No se pudo inicializar:", e);
+  }
+} else if (isClient && !firebaseReady) {
+  console.error(
+    "[Firebase] Faltan las variables de entorno NEXT_PUBLIC_FIREBASE_*. " +
+      "Cargalas en Vercel (Settings -> Environment Variables) y volvé a desplegar."
+  );
+}
+
+export { db, auth };
 export default app;
