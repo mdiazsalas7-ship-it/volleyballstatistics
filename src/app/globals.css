@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+html,
+body {
+  background: #f5f7fb;
+  color: #0e1726;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-3xl px-4;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-card shadow-card;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-court;
+  }
+
+  .h-display {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight text-ink;
+  }
+
+  /* Marcador tipo LED */
+  .scoreboard {
+    @apply rounded-2xl bg-ink text-white;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  }
+  .led {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    @apply font-bold text-amber;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply btn bg-court text-white hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-card text-ink hover:bg-surface;
+  }
+
+  .live-dot {
+    @apply inline-block h-2 w-2 rounded-full bg-coral animate-live;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-line bg-card px-3 py-2.5 text-sm text-ink outline-none focus:border-court;
+  }
+
+  .stat-btn {
+    @apply flex flex-col items-center justify-center rounded-xl border border-line bg-card px-2 py-3 text-center transition active:scale-95;
+  }
+  .stat-btn-point {
+    @apply border-court/30 bg-court/5;
+  }
+  .stat-btn-error {
+    @apply border-coral/30 bg-coral/5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-live {
+    animation: none;
+  }
+}
