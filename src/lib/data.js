@@ -16,6 +16,7 @@ import {
   increment,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { deleteImage } from "./storage";
 import { emptyStats } from "./stats";
 
 // Si Firebase no está listo (faltan variables en Vercel), estas funciones
@@ -28,9 +29,35 @@ export async function getTeams() {
   const snap = await getDocs(query(collection(db, "teams"), orderBy("name")));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
+export async function getTeam(id) {
+  if (!db) return null;
+  const d = await getDoc(doc(db, "teams", id));
+  return d.exists() ? { id: d.id, ...d.data() } : null;
+}
 export async function createTeam(data) {
   if (!db) throw new Error("Firebase no configurado");
   return addDoc(collection(db, "teams"), { ...data, createdAt: serverTimestamp() });
+}
+export async function updateTeam(id, data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return updateDoc(doc(db, "teams", id), data);
+}
+export async function deleteTeam(id) {
+  if (!db) throw new Error("Firebase no configurado");
+  // Borra también los jugadores del equipo y sus fotos.
+  const teamSnap = await getDoc(doc(db, "teams", id));
+  const players = await getDocs(query(collection(db, "players"), where("teamId", "==", id)));
+  await Promise.all(
+    players.docs.map(async (p) => {
+      const data = p.data();
+      if (data.photoPath) await deleteImage(data.photoPath);
+      return deleteDoc(p.ref);
+    })
+  );
+  if (teamSnap.exists() && teamSnap.data().logoPath) {
+    await deleteImage(teamSnap.data().logoPath);
+  }
+  return deleteDoc(doc(db, "teams", id));
 }
 
 // ---------- Jugadores ----------
@@ -43,6 +70,20 @@ export async function getPlayersByTeam(teamId) {
   if (!db) return [];
   const snap = await getDocs(query(collection(db, "players"), where("teamId", "==", teamId)));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+export async function createPlayer(data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return addDoc(collection(db, "players"), { ...data, createdAt: serverTimestamp() });
+}
+export async function updatePlayer(id, data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return updateDoc(doc(db, "players", id), data);
+}
+export async function deletePlayer(id) {
+  if (!db) throw new Error("Firebase no configurado");
+  const snap = await getDoc(doc(db, "players", id));
+  if (snap.exists() && snap.data().photoPath) await deleteImage(snap.data().photoPath);
+  return deleteDoc(doc(db, "players", id));
 }
 
 // ---------- Partidos ----------

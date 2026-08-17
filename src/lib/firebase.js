@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 // La config web de Firebase es pública por diseño. La seguridad la dan las
 // Reglas de Firestore. Se lee de variables de entorno (cargarlas en Vercel).
@@ -23,6 +24,7 @@ const isClient = typeof window !== "undefined";
 let app = null;
 let db = null;
 let auth = null;
+let storage = null;
 
 // Solo inicializamos en el navegador y solo si hay configuración válida.
 // Envuelto en try/catch para que un error de config NUNCA rompa la página.
@@ -31,6 +33,7 @@ if (isClient && firebaseReady) {
     app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
+    storage = getStorage(app);
   } catch (e) {
     console.error("[Firebase] No se pudo inicializar:", e);
   }
@@ -41,5 +44,5 @@ if (isClient && firebaseReady) {
   );
 }
 
-export { db, auth };
+export { db, auth, storage };
 export default app;

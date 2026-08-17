@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 const items = [
-  { href: "/", label: "Posiciones", icon: TableIcon },
-  { href: "/calendario", label: "Calendario", icon: CalIcon },
-  { href: "/estadisticas", label: "Estadísticas", icon: ChartIcon },
+  { href: "/", label: "Tabla", icon: TableIcon },
+  { href: "/calendario", label: "Partidos", icon: CalIcon },
+  { href: "/estadisticas", label: "Stats", icon: ChartIcon },
+  { href: "/equipos", label: "Equipos", icon: TeamIcon },
 ];
 
 export default function Nav() {
@@ -15,7 +16,7 @@ export default function Nav() {
   const { isAdmin, user } = useAuth();
 
   const links = [...items];
-  if (isAdmin) links.push({ href: "/mesa-tecnica", label: "Mesa técnica", icon: WhistleIcon });
+  if (isAdmin) links.push({ href: "/mesa-tecnica", label: "Mesa", icon: WhistleIcon });
   links.push({ href: user ? "/cuenta" : "/login", label: user ? "Cuenta" : "Entrar", icon: UserIcon });
 
   return (
@@ -53,6 +54,9 @@ function CalIcon({ active }) {
 }
 function ChartIcon({ active }) {
   return (<svg {...base(active)} viewBox="0 0 24 24"><path d="M5 21V9M12 21V4M19 21v-7" /></svg>);
+}
+function TeamIcon({ active }) {
+  return (<svg {...base(active)} viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" /><circle cx="17" cy="10" r="2.2" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15.5 20c0-2 1.5-3.5 3.5-3.5" /></svg>);
 }
 function WhistleIcon({ active }) {
   return (<svg {...base(active)} viewBox="0 0 24 24"><circle cx="9" cy="14" r="6" /><path d="M14 12l7-3M9 8V5h4" /></svg>);

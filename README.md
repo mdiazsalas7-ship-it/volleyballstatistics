@@ -13,7 +13,8 @@ App de estadísticas para torneos amateur de voleibol. Construida con **Next.js*
 ## 🔜 Próximas etapas
 - **Etapa 2** ✅ incluida: instalación en el celular (PWA) y notificaciones push (FCM).
   Configuración en `NOTIFICACIONES-SETUP.md`.
-- **Etapa 3**: sección de equipos con roster y fotos de jugadores (solo el admin los carga).
+- **Etapa 3** ✅ incluida: equipos con roster y fotos de jugadores (gestionado por el
+  admin, con Firebase Storage). Configuración en `STORAGE-SETUP.md`.
 
 ---
 
