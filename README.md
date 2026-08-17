@@ -11,7 +11,8 @@ App de estadísticas para torneos amateur de voleibol. Construida con **Next.js*
 - Vista de partido en tiempo real (base para el "en vivo" de la Etapa 2).
 
 ## 🔜 Próximas etapas
-- **Etapa 2**: ver partidos en vivo (ya funciona la base), notificaciones push (FCM) e instalación PWA pulida.
+- **Etapa 2** ✅ incluida: instalación en el celular (PWA) y notificaciones push (FCM).
+  Configuración en `NOTIFICACIONES-SETUP.md`.
 - **Etapa 3**: sección de equipos con roster y fotos de jugadores (solo el admin los carga).
 
 ---

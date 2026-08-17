@@ -38,6 +38,16 @@ service cloud.firestore {
       }
     }
 
+    // Tokens de notificaciones. Cada dispositivo registra el suyo (sin necesidad
+    // de login, para que los visitantes también reciban avisos). Nadie puede
+    // leerlos desde el cliente: solo el servidor (Admin SDK) los usa para enviar.
+    match /fcmTokens/{token} {
+      allow read:   if false;
+      allow create: if request.resource.data.keys().hasOnly(['token', 'uid', 'userAgent', 'createdAt']);
+      allow update: if request.resource.data.keys().hasOnly(['token', 'uid', 'userAgent', 'createdAt']);
+      allow delete: if isAdmin();
+    }
+
     // Cualquier otra ruta no contemplada queda bloqueada por defecto.
     match /{document=**} {
       allow read, write: if false;

@@ -3,8 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { getPlayersByTeam, watchMatchStats, updateMatch, applyStatAction } from "@/lib/data";
 import { ANNOTATOR_ACTIONS, totalPoints } from "@/lib/stats";
+import { useAuth } from "@/context/AuthContext";
+import { sendBroadcast } from "@/lib/messaging";
 
 export default function Annotator({ match, teams, onBack }) {
+  const { user } = useAuth();
   const home = teams.find((t) => t.id === match.homeTeamId);
   const away = teams.find((t) => t.id === match.awayTeamId);
 
@@ -53,6 +56,18 @@ export default function Annotator({ match, teams, onBack }) {
       status: "live",
       sets: sets.length ? sets : [{ home: 0, away: 0 }],
     });
+    // Aviso automático a quienes tienen notificaciones activadas.
+    try {
+      await sendBroadcast(
+        user,
+        "¡Empezó el partido!",
+        `${home?.name || "Local"} vs ${away?.name || "Visita"} está en vivo.`
+      );
+      flash("Partido iniciado y aviso enviado");
+    } catch {
+      // Si las notificaciones no están configuradas, no interrumpe el juego.
+      flash("Partido iniciado");
+    }
   };
 
   const changeScore = async (side, delta) => {

@@ -55,3 +55,18 @@ El proyecto usa la última versión parcheada de **Next.js 14.2.x** y la última
 no exposición de datos) que solo se resuelven saltando a Next.js 16, un cambio
 mayor que conviene hacer con calma y pruebas más adelante. En Vercel, esas rutas
 de ataque están en buena parte mitigadas por la plataforma.
+
+---
+
+## Etapa 2: notificaciones — nota de seguridad importante
+A diferencia de la config web (que es pública), la **cuenta de servicio**
+(`FIREBASE_SERVICE_ACCOUNT_B64`) **es un secreto real**. Con ella se puede
+administrar tu proyecto. Por eso:
+- **NUNCA** lleva el prefijo `NEXT_PUBLIC` (así nunca llega al navegador).
+- Solo se usa en el servidor, dentro de `/api/notify`.
+- No la subas al repositorio (va únicamente en variables de entorno de Vercel).
+- Si alguna vez se filtra, revocala en Firebase → Cuentas de servicio y generá otra.
+
+El envío de avisos está protegido: la API verifica el token de identidad del
+usuario y que su rol sea `admin` antes de enviar nada. Los tokens de dispositivos
+(`fcmTokens`) no se pueden leer desde el cliente; solo el servidor los usa.
