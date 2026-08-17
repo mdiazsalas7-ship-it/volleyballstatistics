@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,9 +17,28 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Íconos Material Symbols */
+.mi {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  user-select: none;
+}
+.mi-fill {
+  font-variation-settings: "FILL" 1;
+}
+
 @layer components {
   .container-app {
-    @apply mx-auto w-full max-w-3xl px-4;
+    @apply mx-auto w-full max-w-2xl px-4;
   }
 
   .card {
@@ -34,16 +54,15 @@ body {
     @apply font-bold tracking-tight text-ink;
   }
 
+  /* Encabezado superior */
+  .app-header {
+    @apply sticky top-0 z-40 flex h-14 items-center justify-between bg-ink px-4 text-white;
+  }
+
   /* Marcador tipo LED */
   .scoreboard {
     @apply rounded-2xl bg-ink text-white;
-    background-image: repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.04) 0px,
-      rgba(255, 255, 255, 0.04) 1px,
-      transparent 1px,
-      transparent 14px
-    );
+    background-image: radial-gradient(120% 120% at 50% 0%, rgba(27, 79, 209, 0.18) 0%, transparent 55%);
   }
   .led {
     font-family: var(--font-display);
@@ -51,32 +70,42 @@ body {
     @apply font-bold text-amber;
   }
 
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98];
-  }
-  .btn-primary {
-    @apply btn bg-court text-white hover:brightness-110;
-  }
-  .btn-ghost {
-    @apply btn border border-line bg-card text-ink hover:bg-surface;
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
   }
 
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply btn bg-court text-white shadow-[0_8px_20px_-8px_rgba(27,79,209,0.6)] hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn border border-court/40 bg-transparent text-court hover:bg-court/5;
+  }
+
+  .live-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-coral/15 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-coral;
+  }
   .live-dot {
     @apply inline-block h-2 w-2 rounded-full bg-coral animate-live;
   }
 
   .input {
-    @apply w-full rounded-xl border border-line bg-card px-3 py-2.5 text-sm text-ink outline-none focus:border-court;
+    @apply w-full rounded-lg border border-line bg-card px-3 py-2.5 text-sm text-ink outline-none focus:border-2 focus:border-court;
   }
 
-  .stat-btn {
-    @apply flex flex-col items-center justify-center rounded-xl border border-line bg-card px-2 py-3 text-center transition active:scale-95;
+  /* Chips de filtro (estadísticas) */
+  .chip {
+    @apply whitespace-nowrap rounded-full border border-line bg-card px-4 py-2 text-sm font-semibold text-muted transition;
   }
-  .stat-btn-point {
-    @apply border-court/30 bg-court/5;
+  .chip-active {
+    @apply border-court bg-court text-white;
   }
-  .stat-btn-error {
-    @apply border-coral/30 bg-coral/5;
+
+  /* Botones grandes del anotador */
+  .action-btn {
+    @apply flex flex-col items-center justify-center gap-1.5 rounded-xl py-4 text-sm font-bold text-white transition active:scale-95;
   }
 }
 

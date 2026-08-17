@@ -1,6 +1,6 @@
 export function PageHeader({ eyebrow, title, action }) {
   return (
-    <header className="mb-5 flex items-end justify-between gap-3">
+    <header className="mb-4 flex items-end justify-between gap-3">
       <div>
         {eyebrow ? <p className="eyebrow mb-1">{eyebrow}</p> : null}
         <h1 className="h-display text-2xl leading-tight sm:text-3xl">{title}</h1>
@@ -13,6 +13,7 @@ export function PageHeader({ eyebrow, title, action }) {
 export function Empty({ title, hint }) {
   return (
     <div className="card flex flex-col items-center gap-1 px-6 py-12 text-center">
+      <span className="mi mb-1 text-muted" style={{ fontSize: 40 }}>sports_volleyball</span>
       <p className="h-display text-lg">{title}</p>
       {hint ? <p className="max-w-sm text-sm text-muted">{hint}</p> : null}
     </div>
@@ -29,7 +30,7 @@ export function Spinner() {
 
 export function LiveBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-coral/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-coral">
+    <span className="live-badge">
       <span className="live-dot" /> En vivo
     </span>
   );

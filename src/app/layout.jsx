@@ -1,6 +1,7 @@
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Nav from "@/components/Nav";
+import AppHeader from "@/components/AppHeader";
 import RegisterSW from "@/components/RegisterSW";
 import ConfigBanner from "@/components/ConfigBanner";
 
@@ -24,7 +25,8 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen pb-24">
         <AuthProvider>
           <RegisterSW />
-          <main className="container-app pt-6">
+          <AppHeader />
+          <main className="container-app pt-5">
             <ConfigBanner />
             {children}
           </main>

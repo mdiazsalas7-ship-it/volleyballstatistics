@@ -137,8 +137,9 @@ export async function applyStatAction(matchId, player, applyMap) {
     await setDoc(ref, {
       playerId: player.id,
       playerName: player.name,
-      number: player.number || null,
+      number: player.number ?? null,
       teamId: player.teamId,
+      photoUrl: player.photoUrl || null,
       ...emptyStats(),
     });
   }

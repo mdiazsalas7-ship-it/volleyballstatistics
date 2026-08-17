@@ -5,7 +5,8 @@ import Link from "next/link";
 import { getTeams, getPlayers, createTeam, updateTeam } from "@/lib/data";
 import { uploadImage } from "@/lib/storage";
 import { useAuth } from "@/context/AuthContext";
-import { PageHeader, Spinner, Empty } from "@/components/ui";
+import { Spinner, Empty } from "@/components/ui";
+import { TeamLogo } from "@/components/media";
 import PhotoInput from "@/components/PhotoInput";
 
 export default function TeamsPage() {
@@ -19,52 +20,36 @@ export default function TeamsPage() {
     const [t, p] = await Promise.all([getTeams(), getPlayers()]);
     const c = {};
     for (const pl of p) c[pl.teamId] = (c[pl.teamId] || 0) + 1;
-    setTeams(t);
-    setCounts(c);
-    setLoading(false);
+    setTeams(t); setCounts(c); setLoading(false);
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   if (loading) return <Spinner />;
 
   return (
     <div className="space-y-5">
-      <PageHeader
-        eyebrow="Torneo"
-        title="Equipos"
-        action={
-          isAdmin ? (
-            <button className="btn-primary" onClick={() => setShowForm((v) => !v)}>
-              {showForm ? "Cerrar" : "+ Equipo"}
-            </button>
-          ) : null
-        }
-      />
+      <div className="flex items-center justify-between">
+        <h1 className="h-display text-3xl">Equipos</h1>
+        {isAdmin && (
+          <button className="btn-primary" onClick={() => setShowForm((v) => !v)}>
+            <span className="mi" style={{ fontSize: 20 }}>{showForm ? "close" : "add"}</span>
+            {showForm ? "Cerrar" : "Equipo"}
+          </button>
+        )}
+      </div>
 
-      {isAdmin && showForm && (
-        <TeamForm
-          onDone={() => {
-            setShowForm(false);
-            load();
-          }}
-        />
-      )}
+      {isAdmin && showForm && <TeamForm onDone={() => { setShowForm(false); load(); }} />}
 
       {teams.length === 0 ? (
-        <Empty
-          title="Todavía no hay equipos"
-          hint={isAdmin ? "Creá el primero con + Equipo." : "El administrador aún no cargó los equipos."}
-        />
+        <Empty title="Todavía no hay equipos" hint={isAdmin ? "Creá el primero con + Equipo." : "El administrador aún no cargó los equipos."} />
       ) : (
         <div className="grid grid-cols-2 gap-3">
           {teams.map((t) => (
-            <Link key={t.id} href={`/equipos/${t.id}`} className="card flex flex-col items-center gap-2 p-4 text-center hover:bg-surface">
-              <TeamLogo team={t} size={56} />
+            <Link key={t.id} href={`/equipos/${t.id}`} className="card flex flex-col items-center gap-3 p-5 text-center transition hover:-translate-y-0.5">
+              <TeamLogo team={t} size={72} />
               <div>
-                <p className="font-semibold text-ink">{t.name}</p>
+                <p className="font-bold text-ink">{t.name}</p>
                 <p className="text-xs text-muted">{counts[t.id] || 0} jugadores</p>
               </div>
             </Link>
@@ -75,23 +60,7 @@ export default function TeamsPage() {
   );
 }
 
-export function TeamLogo({ team, size = 40 }) {
-  const s = { width: size, height: size };
-  if (team?.logoUrl) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={team.logoUrl} alt={team.name} style={s} className="rounded-full object-cover" />;
-  }
-  return (
-    <span
-      style={{ ...s, background: team?.color || "#1B4FD1" }}
-      className="flex items-center justify-center rounded-full font-bold text-white"
-    >
-      {(team?.name || "?").slice(0, 2).toUpperCase()}
-    </span>
-  );
-}
-
-function TeamForm({ onDone, existing }) {
+export function TeamForm({ onDone, existing }) {
   const [name, setName] = useState(existing?.name || "");
   const [color, setColor] = useState(existing?.color || "#1B4FD1");
   const [file, setFile] = useState(null);
@@ -104,12 +73,8 @@ function TeamForm({ onDone, existing }) {
     setSaving(true);
     try {
       let id = existing?.id;
-      if (id) {
-        await updateTeam(id, { name: name.trim(), color });
-      } else {
-        const ref = await createTeam({ name: name.trim(), color });
-        id = ref.id;
-      }
+      if (id) await updateTeam(id, { name: name.trim(), color });
+      else { const ref = await createTeam({ name: name.trim(), color }); id = ref.id; }
       if (file) {
         const { url, path } = await uploadImage(file, `teams/${id}/logo.jpg`);
         await updateTeam(id, { logoUrl: url, logoPath: path });
@@ -135,13 +100,9 @@ function TeamForm({ onDone, existing }) {
       </label>
       {error && <p className="text-sm text-coral">{error}</p>}
       <div className="flex gap-2">
-        <button className="btn-primary" disabled={saving} onClick={submit}>
-          {saving ? "Guardando…" : "Guardar"}
-        </button>
+        <button className="btn-primary" disabled={saving} onClick={submit}>{saving ? "Guardando…" : "Guardar"}</button>
         <button className="btn-ghost" onClick={onDone}>Cancelar</button>
       </div>
     </div>
   );
 }
-
-export { TeamForm };
