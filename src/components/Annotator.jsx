@@ -73,14 +73,17 @@ export default function Annotator({ match, teams, onBack }) {
     onBack();
   };
 
-  const doAction = async (action) => {
+  const doAction = (action) => {
     if (!activePlayer) return flash("Elegí un jugador primero");
     if (match.status !== "live") return flash("Iniciá el partido para anotar");
     const sign = correcting ? -1 : 1;
     const applyMap = {};
     for (const [k, v] of Object.entries(action.apply)) applyMap[k] = v * sign;
-    await applyStatAction(match.id, activePlayer, applyMap);
+    // Feedback inmediato; la escritura se confirma en segundo plano.
     flash(`${correcting ? "−" : "+"} ${action.label} · ${activePlayer.name}`);
+    applyStatAction(match.id, activePlayer, applyMap).catch((e) =>
+      flash("No se guardó: " + (e?.message || "error"))
+    );
   };
 
   const roster = players[activeTeam] || [];

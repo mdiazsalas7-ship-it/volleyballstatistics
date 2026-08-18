@@ -25,7 +25,9 @@ export default function StatsPage() {
   const [cat, setCat] = useState(CATEGORIES[0]);
 
   useEffect(() => {
-    Promise.all([getAllPlayerStats(), getTeams()]).then(([s, t]) => { setStats(s); setTeams(t); setLoading(false); });
+    Promise.all([getAllPlayerStats().catch(() => []), getTeams().catch(() => [])])
+      .then(([s, t]) => { setStats(s); setTeams(t); })
+      .finally(() => setLoading(false));
   }, []);
 
   const teamName = (id) => teams.find((t) => t.id === id)?.name || "";

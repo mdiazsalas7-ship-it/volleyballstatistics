@@ -133,26 +133,31 @@ export function watchMatchStats(matchId, cb) {
 export async function applyStatAction(matchId, player, applyMap) {
   if (!db) throw new Error("Firebase no configurado");
   const ref = doc(db, "matches", matchId, "stats", player.id);
-  const existing = await getDoc(ref);
-  if (!existing.exists()) {
-    await setDoc(ref, {
-      playerId: player.id,
-      playerName: player.name,
-      number: player.number ?? null,
-      teamId: player.teamId,
-      photoUrl: player.photoUrl || null,
-      ...emptyStats(),
-    });
-  }
-  const incs = {};
-  for (const [k, v] of Object.entries(applyMap)) incs[k] = increment(v);
-  await updateDoc(ref, incs);
+  const payload = {
+    playerId: player.id,
+    playerName: player.name,
+    number: player.number ?? null,
+    teamId: player.teamId,
+    photoUrl: player.photoUrl || null,
+  };
+  for (const [k, v] of Object.entries(applyMap)) payload[k] = increment(v);
+  // Una sola escritura: crea el doc si no existe y suma los contadores.
+  await setDoc(ref, payload, { merge: true });
 }
 
+// Junta las estadísticas de todos los partidos leyendo cada subcolección.
+// (Evita la consulta collectionGroup, que requiere una regla especial.)
 export async function getAllPlayerStats() {
   if (!db) return [];
-  const snap = await getDocs(collectionGroup(db, "stats"));
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  const matchesSnap = await getDocs(collection(db, "matches"));
+  const all = [];
+  await Promise.all(
+    matchesSnap.docs.map(async (m) => {
+      const s = await getDocs(collection(db, "matches", m.id, "stats"));
+      s.forEach((d) => all.push({ id: d.id, ...d.data() }));
+    })
+  );
+  return all;
 }
 
 // ---------- Marca (white-label) ----------

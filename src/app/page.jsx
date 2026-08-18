@@ -17,7 +17,7 @@ export default function HomePage() {
 
   useEffect(() => {
     getTeams().then(setTeams);
-    getAllPlayerStats().then(setRawStats);
+    getAllPlayerStats().then(setRawStats).catch(() => setRawStats([]));
     const u1 = watchMatches((m) => { setMatches(m); setLoading(false); });
     const u2 = watchNews(setNews, 10);
     return () => { u1(); u2(); };
