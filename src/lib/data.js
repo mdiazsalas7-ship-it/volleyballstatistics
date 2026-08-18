@@ -12,6 +12,7 @@ import {
   query,
   where,
   orderBy,
+  limit as fbLimit,
   serverTimestamp,
   increment,
 } from "firebase/firestore";
@@ -152,4 +153,56 @@ export async function getAllPlayerStats() {
   if (!db) return [];
   const snap = await getDocs(collectionGroup(db, "stats"));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+// ---------- Marca (white-label) ----------
+// settings/branding -> { leagueName, logoUrl, logoPath }
+export function watchBranding(cb) {
+  if (!db) { cb(null); return noop; }
+  return onSnapshot(doc(db, "settings", "branding"), (d) =>
+    cb(d.exists() ? d.data() : null)
+  );
+}
+export async function getBranding() {
+  if (!db) return null;
+  const d = await getDoc(doc(db, "settings", "branding"));
+  return d.exists() ? d.data() : null;
+}
+export async function updateBranding(data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return setDoc(doc(db, "settings", "branding"), data, { merge: true });
+}
+
+// ---------- Noticias ----------
+// news/{id} -> { title, body, imageUrl, imagePath, pinned, createdAt }
+export function watchNews(cb, max = 30) {
+  if (!db) { cb([]); return noop; }
+  return onSnapshot(
+    query(collection(db, "news"), orderBy("createdAt", "desc"), fbLimit(max)),
+    (snap) => cb(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
+  );
+}
+export async function getNews(max = 30) {
+  if (!db) return [];
+  const snap = await getDocs(query(collection(db, "news"), orderBy("createdAt", "desc"), fbLimit(max)));
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+export async function getNewsItem(id) {
+  if (!db) return null;
+  const d = await getDoc(doc(db, "news", id));
+  return d.exists() ? { id: d.id, ...d.data() } : null;
+}
+export async function createNews(data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return addDoc(collection(db, "news"), { ...data, createdAt: serverTimestamp() });
+}
+export async function updateNews(id, data) {
+  if (!db) throw new Error("Firebase no configurado");
+  return updateDoc(doc(db, "news", id), data);
+}
+export async function deleteNews(id) {
+  if (!db) throw new Error("Firebase no configurado");
+  const snap = await getDoc(doc(db, "news", id));
+  if (snap.exists() && snap.data().imagePath) await deleteImage(snap.data().imagePath);
+  return deleteDoc(doc(db, "news", id));
 }

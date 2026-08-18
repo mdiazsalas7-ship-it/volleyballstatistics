@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 const items = [
-  { href: "/", label: "Tabla", icon: "leaderboard" },
+  { href: "/", label: "Inicio", icon: "home" },
+  { href: "/tabla", label: "Tabla", icon: "leaderboard" },
   { href: "/calendario", label: "Partidos", icon: "sports_volleyball" },
   { href: "/estadisticas", label: "Stats", icon: "analytics" },
   { href: "/equipos", label: "Equipos", icon: "groups" },
@@ -13,11 +14,10 @@ const items = [
 
 export default function Nav() {
   const pathname = usePathname();
-  const { isAdmin, user } = useAuth();
+  const { isAdmin } = useAuth();
 
   const links = [...items];
   if (isAdmin) links.push({ href: "/mesa-tecnica", label: "Mesa", icon: "sports_gymnastics" });
-  links.push({ href: user ? "/cuenta" : "/login", label: user ? "Cuenta" : "Entrar", icon: "account_circle" });
 
   const isActive = (href) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
@@ -34,9 +34,7 @@ export default function Nav() {
                 active ? "text-court" : "text-muted"
               }`}
             >
-              <span className={`mi ${active ? "mi-fill" : ""}`} style={{ fontSize: 24 }}>
-                {it.icon}
-              </span>
+              <span className={`mi ${active ? "mi-fill" : ""}`} style={{ fontSize: 24 }}>{it.icon}</span>
               <span className="leading-none">{it.label}</span>
             </Link>
           );

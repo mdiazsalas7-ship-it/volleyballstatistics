@@ -1,5 +1,6 @@
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { BrandingProvider } from "@/context/BrandingContext";
 import Nav from "@/components/Nav";
 import AppHeader from "@/components/AppHeader";
 import RegisterSW from "@/components/RegisterSW";
@@ -7,7 +8,7 @@ import ConfigBanner from "@/components/ConfigBanner";
 
 export const metadata = {
   title: "Torneo Voley — Estadísticas",
-  description: "Tabla de posiciones, calendario y estadísticas del torneo amateur de voleibol.",
+  description: "Resultados, tabla de posiciones, estadísticas y noticias de tu liga de voleibol.",
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Torneo Voley" },
   icons: { apple: "/icons/apple-touch-icon.png" },
@@ -24,13 +25,15 @@ export default function RootLayout({ children }) {
     <html lang="es">
       <body className="min-h-screen pb-24">
         <AuthProvider>
-          <RegisterSW />
-          <AppHeader />
-          <main className="container-app pt-5">
-            <ConfigBanner />
-            {children}
-          </main>
-          <Nav />
+          <BrandingProvider>
+            <RegisterSW />
+            <AppHeader />
+            <main className="container-app pt-5">
+              <ConfigBanner />
+              {children}
+            </main>
+            <Nav />
+          </BrandingProvider>
         </AuthProvider>
       </body>
     </html>

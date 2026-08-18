@@ -2,13 +2,19 @@
 
 App de estadísticas para torneos amateur de voleibol. Construida con **Next.js**, **Firebase (Firestore + Auth)** y **Tailwind CSS**. Despliega en **Vercel** y funciona como **PWA** (se instala en el celular).
 
-## ✅ Etapa 1 (incluida en este proyecto)
-- **Tabla de posiciones** automática (calculada desde los partidos finalizados).
+## ✅ Funciones incluidas
+- **Inicio (dashboard)**: resumen con partidos en vivo, carruseles de últimos resultados,
+  líderes de la liga, próximos partidos y noticias destacadas.
+- **Marca personalizable (white-label)**: el admin cambia el nombre y el logo de la liga
+  desde Cuenta → "Marca de la liga"; se refleja al instante en toda la app.
+- **Noticias**: módulo donde el admin publica novedades (con imagen) que aparecen en Inicio.
+- **Tabla de posiciones** automática (desde los partidos finalizados).
 - **Calendario**: el admin programa partidos; todos ven próximos, en vivo y resultados.
-- **Estadísticas individuales**: líderes del torneo (puntos, kills, aces, bloqueos, defensas, asistencias, eficiencia).
+- **Estadísticas individuales**: líderes del torneo por categoría.
 - **Mesa técnica**: anotador en vivo (marcador por set + estadísticas por jugador). Solo admin.
+- **Equipos y roster** con fotos de jugadores (Firebase Storage), gestionado por el admin.
 - **Roles**: administrador (gestiona todo) y visitante (solo lectura).
-- Vista de partido en tiempo real (base para el "en vivo" de la Etapa 2).
+- **PWA**: instalación en el celular + notificaciones push (FCM).
 
 ## 🔜 Próximas etapas
 - **Etapa 2** ✅ incluida: instalación en el celular (PWA) y notificaciones push (FCM).
