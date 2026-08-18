@@ -59,7 +59,7 @@ function MesaTecnica() {
               className="card flex w-full items-center justify-between px-4 py-3 text-left hover:bg-surface"
             >
               <div>
-                <p className="font-semibold text-ink">
+                <p className="font-semibold text-snow">
                   {teamName(m.homeTeamId)} <span className="text-muted">vs</span> {teamName(m.awayTeamId)}
                 </p>
                 <p className="text-xs text-muted">

@@ -49,7 +49,7 @@ export default function TeamsPage() {
             <Link key={t.id} href={`/equipos/${t.id}`} className="card flex flex-col items-center gap-3 p-5 text-center transition hover:-translate-y-0.5">
               <TeamLogo team={t} size={72} />
               <div>
-                <p className="font-bold text-ink">{t.name}</p>
+                <p className="font-bold text-snow">{t.name}</p>
                 <p className="text-xs text-muted">{counts[t.id] || 0} jugadores</p>
               </div>
             </Link>

@@ -54,7 +54,7 @@ export default function NewsDetailPage() {
       )}
       <h1 className="h-display text-2xl leading-tight">{item.title}</h1>
       <p className="text-xs text-muted">{fmt(item.createdAt)}</p>
-      {item.body && <p className="whitespace-pre-wrap leading-relaxed text-ink">{item.body}</p>}
+      {item.body && <p className="whitespace-pre-wrap leading-relaxed text-snow">{item.body}</p>}
 
       {isAdmin && (
         <div className="flex gap-2 pt-2">

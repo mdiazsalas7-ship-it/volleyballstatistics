@@ -31,7 +31,7 @@ export default function NotificationToggle() {
   return (
     <div className="card space-y-3 p-4">
       <div>
-        <p className="font-semibold text-ink">Notificaciones</p>
+        <p className="font-semibold text-snow">Notificaciones</p>
         <p className="text-sm text-muted">
           Recibí avisos cuando empiezan los partidos o hay resultados.
         </p>

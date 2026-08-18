@@ -118,7 +118,7 @@ function StatTable({ title, color, rows }) {
               <td className="px-4 py-2.5">
                 <span className="flex items-center gap-2.5">
                   <PlayerAvatar player={s} size={32} />
-                  <span className="font-semibold text-ink">
+                  <span className="font-semibold text-snow">
                     {s.number != null ? <span className="text-muted">#{s.number} </span> : ""}{s.playerName}
                   </span>
                 </span>

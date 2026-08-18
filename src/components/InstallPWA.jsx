@@ -50,7 +50,7 @@ export default function InstallPWA() {
   return (
     <div className="card space-y-3 p-4">
       <div>
-        <p className="font-semibold text-ink">Instalar en el celular</p>
+        <p className="font-semibold text-snow">Instalar en el celular</p>
         <p className="text-sm text-muted">
           Agregá la app a tu pantalla de inicio para abrirla como una app nativa.
         </p>
@@ -60,7 +60,7 @@ export default function InstallPWA() {
       </button>
 
       {showIOS && (
-        <div className="rounded-xl border border-line bg-surface p-3 text-sm text-ink">
+        <div className="rounded-xl border border-line bg-surface p-3 text-sm text-snow">
           {isIOS ? (
             <>
               <p className="mb-1 font-semibold">En iPhone / iPad (Safari):</p>

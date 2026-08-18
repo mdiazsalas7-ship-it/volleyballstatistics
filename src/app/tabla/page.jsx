@@ -54,7 +54,7 @@ export default function StandingsPage() {
                     <td className="py-3.5">
                       <span className="flex items-center gap-2.5">
                         <TeamLogo team={teamById(r.teamId) || r} size={30} />
-                        <span className="font-semibold text-ink">{r.name}</span>
+                        <span className="font-semibold text-snow">{r.name}</span>
                       </span>
                     </td>
                     <td className="px-2 py-3.5 text-center tabular-nums">{r.played}</td>

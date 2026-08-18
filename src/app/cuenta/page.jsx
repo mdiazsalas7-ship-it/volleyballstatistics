@@ -38,7 +38,7 @@ export default function AccountPage() {
               <Link href="/noticias" className="card flex items-center justify-between p-4">
                 <span className="flex items-center gap-3">
                   <span className="mi text-court" style={{ fontSize: 24 }}>newspaper</span>
-                  <span className="font-semibold text-ink">Gestionar noticias</span>
+                  <span className="font-semibold text-snow">Gestionar noticias</span>
                 </span>
                 <span className="mi text-muted" style={{ fontSize: 22 }}>chevron_right</span>
               </Link>
@@ -64,7 +64,7 @@ function Row({ label, value }) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm text-muted">{label}</span>
-      <span className="text-sm font-semibold text-ink">{value}</span>
+      <span className="text-sm font-semibold text-snow">{value}</span>
     </div>
   );
 }
@@ -102,7 +102,7 @@ function BrandingForm() {
   return (
     <div className="card space-y-3 p-4">
       <div>
-        <p className="font-semibold text-ink">Marca de la liga</p>
+        <p className="font-semibold text-snow">Marca de la liga</p>
         <p className="text-sm text-muted">Cambiá el nombre y el logo que se ven arriba en toda la app.</p>
       </div>
       <div className="flex items-center gap-3">
@@ -149,7 +149,7 @@ function BroadcastForm({ user }) {
   return (
     <div className="card space-y-3 p-4">
       <div>
-        <p className="font-semibold text-ink">Enviar aviso a todos</p>
+        <p className="font-semibold text-snow">Enviar aviso a todos</p>
         <p className="text-sm text-muted">Notificación push a quienes las activaron.</p>
       </div>
       <input className="input" placeholder="Título" value={title} onChange={(e) => setTitle(e.target.value)} />

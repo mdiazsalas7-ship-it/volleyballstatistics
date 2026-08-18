@@ -75,7 +75,7 @@ export default function StatsPage() {
               </span>
               <PlayerAvatar player={p} size={44} />
               <div className="min-w-0 flex-1">
-                <p className="truncate font-bold text-ink">{p.playerName}</p>
+                <p className="truncate font-bold text-snow">{p.playerName}</p>
                 <p className="truncate text-xs text-muted">{teamName(p.teamId)}</p>
               </div>
               <div className="text-right">

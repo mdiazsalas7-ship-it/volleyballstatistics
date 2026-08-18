@@ -94,7 +94,7 @@ export default function TeamDetailPage() {
                 )}
               </div>
               <div className="p-3">
-                <p className="truncate font-bold text-ink">{p.name}</p>
+                <p className="truncate font-bold text-snow">{p.name}</p>
                 <p className="text-xs font-bold uppercase tracking-wide text-court">{roleLabel(p.role)}</p>
                 {isAdmin && (
                   <div className="mt-2 flex gap-1">
@@ -142,7 +142,7 @@ function PlayerForm({ teamId, existing, onDone }) {
 
   return (
     <div className="card space-y-3 p-4">
-      <p className="font-semibold text-ink">{existing ? "Editar jugador" : "Nuevo jugador"}</p>
+      <p className="font-semibold text-snow">{existing ? "Editar jugador" : "Nuevo jugador"}</p>
       <PhotoInput current={existing?.photoUrl} onSelect={setFile} label="Foto" round={false} />
       <label className="block">
         <span className="mb-1 block text-xs font-semibold text-muted">Nombre</span>

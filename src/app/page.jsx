@@ -87,7 +87,7 @@ export default function HomePage() {
               <Link key={r.teamId} href="/tabla" className={`flex items-center gap-3 px-4 py-3 ${i > 0 ? "border-t border-line/70" : ""}`}>
                 <span className={`w-4 text-center text-sm font-bold ${i === 0 ? "text-court" : "text-muted"}`}>{i + 1}</span>
                 <TeamLogo team={teamById(r.teamId) || r} size={28} />
-                <span className="flex-1 truncate font-semibold text-ink">{r.name}</span>
+                <span className="flex-1 truncate font-semibold text-snow">{r.name}</span>
                 <span className="text-xs text-muted">{r.won}G</span>
                 <span className="led text-lg text-court">{r.tablePoints}</span>
               </Link>
@@ -180,7 +180,7 @@ function NewsCard({ n }) {
         )}
       </div>
       <div className="p-3">
-        <p className="line-clamp-2 font-bold leading-snug text-ink">{n.title}</p>
+        <p className="line-clamp-2 font-bold leading-snug text-snow">{n.title}</p>
       </div>
     </Link>
   );
@@ -203,7 +203,7 @@ function Line({ team, score, win }) {
     <div className="flex items-center justify-between py-0.5">
       <span className="flex min-w-0 items-center gap-2">
         <TeamLogo team={team} size={24} />
-        <span className={`truncate text-sm ${win ? "font-bold text-ink" : "font-medium text-muted"}`}>{team?.name || "—"}</span>
+        <span className={`truncate text-sm ${win ? "font-bold text-snow" : "font-medium text-muted"}`}>{team?.name || "—"}</span>
       </span>
       <span className={`led text-lg ${win ? "text-court" : "text-muted"}`}>{score}</span>
     </div>
@@ -233,7 +233,7 @@ function LeaderCard({ p, rank, teamById }) {
         <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber text-xs font-bold text-ink">{rank}</span>
       </div>
       <div>
-        <p className="truncate text-sm font-bold text-ink">{p.playerName}</p>
+        <p className="truncate text-sm font-bold text-snow">{p.playerName}</p>
         <p className="truncate text-xs text-muted">{team?.name || ""}</p>
       </div>
       <div><span className="led text-2xl">{totalPoints(p)}</span><span className="ml-1 text-[10px] font-bold text-muted">PTS</span></div>

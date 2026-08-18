@@ -7,17 +7,17 @@
 :root {
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
+  color-scheme: dark;
 }
 
 html,
 body {
-  background: #f5f7fb;
-  color: #0e1726;
+  background: #0b1524;
+  color: #eaf1fb;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Íconos Material Symbols */
 .mi {
   font-family: "Material Symbols Outlined";
   font-weight: normal;
@@ -51,18 +51,16 @@ body {
 
   .h-display {
     font-family: var(--font-display);
-    @apply font-bold tracking-tight text-ink;
+    @apply font-bold tracking-tight text-snow;
   }
 
-  /* Encabezado superior */
   .app-header {
-    @apply sticky top-0 z-40 flex h-14 items-center justify-between bg-ink px-4 text-white;
+    @apply sticky top-0 z-40 flex h-14 items-center justify-between border-b border-line bg-ink px-4 text-white;
   }
 
-  /* Marcador tipo LED */
   .scoreboard {
-    @apply rounded-2xl bg-ink text-white;
-    background-image: radial-gradient(120% 120% at 50% 0%, rgba(27, 79, 209, 0.18) 0%, transparent 55%);
+    @apply rounded-2xl border border-line bg-ink text-white;
+    background-image: radial-gradient(120% 120% at 50% 0%, rgba(47, 107, 255, 0.22) 0%, transparent 55%);
   }
   .led {
     font-family: var(--font-display);
@@ -78,10 +76,10 @@ body {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98];
   }
   .btn-primary {
-    @apply btn bg-court text-white shadow-[0_8px_20px_-8px_rgba(27,79,209,0.6)] hover:brightness-110;
+    @apply btn bg-court text-white shadow-[0_8px_20px_-8px_rgba(47,107,255,0.7)] hover:brightness-110;
   }
   .btn-ghost {
-    @apply btn border border-court/40 bg-transparent text-court hover:bg-court/5;
+    @apply btn border border-court/50 bg-transparent text-court hover:bg-court/10;
   }
 
   .live-badge {
@@ -92,10 +90,9 @@ body {
   }
 
   .input {
-    @apply w-full rounded-lg border border-line bg-card px-3 py-2.5 text-sm text-ink outline-none focus:border-2 focus:border-court;
+    @apply w-full rounded-lg border border-line bg-bg px-3 py-2.5 text-sm text-snow outline-none placeholder:text-muted/70 focus:border-2 focus:border-court;
   }
 
-  /* Chips de filtro (estadísticas) */
   .chip {
     @apply whitespace-nowrap rounded-full border border-line bg-card px-4 py-2 text-sm font-semibold text-muted transition;
   }
@@ -103,7 +100,6 @@ body {
     @apply border-court bg-court text-white;
   }
 
-  /* Botones grandes del anotador */
   .action-btn {
     @apply flex flex-col items-center justify-center gap-1.5 rounded-xl py-4 text-sm font-bold text-white transition active:scale-95;
   }

@@ -153,8 +153,8 @@ export default function Annotator({ match, teams, onBack }) {
               <button key={p.id} onClick={() => setActivePlayer(p)}
                 className={`relative rounded-xl border py-3 text-center ${active ? "border-2 border-court bg-court/5" : "border-line bg-card"}`}>
                 {active && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-court" />}
-                <p className={`led text-2xl ${active ? "text-court" : "text-ink"}`}>{p.number ?? "–"}</p>
-                <p className="truncate px-1 text-xs font-semibold text-ink">{p.name}</p>
+                <p className={`led text-2xl ${active ? "text-court" : "text-snow"}`}>{p.number ?? "–"}</p>
+                <p className="truncate px-1 text-xs font-semibold text-snow">{p.name}</p>
                 <p className="text-[10px] text-court">{totalPoints(statFor(p.id))} pts</p>
               </button>
             );
@@ -164,7 +164,7 @@ export default function Annotator({ match, teams, onBack }) {
 
       {/* Acciones */}
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold text-ink">
+        <span className="text-sm font-semibold text-snow">
           {activePlayer ? `Anotando: #${activePlayer.number ?? ""} ${activePlayer.name}` : "Elegí un jugador"}
         </span>
         <button onClick={() => setCorrecting((v) => !v)}

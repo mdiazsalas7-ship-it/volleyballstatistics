@@ -146,7 +146,7 @@ function UpcomingCard({ match, teamById, isAdmin }) {
     <div className="card flex items-center gap-3 p-3">
       <div className="w-14 shrink-0 text-center">
         <p className="text-[11px] font-bold text-muted">{top}</p>
-        <p className="led text-base text-ink">{time}</p>
+        <p className="led text-base text-snow">{time}</p>
       </div>
       <div className="h-10 w-px bg-line" />
       <div className="min-w-0 flex-1 space-y-1.5">
@@ -168,7 +168,7 @@ function TeamRow({ team }) {
   return (
     <div className="flex items-center gap-2">
       <TeamLogo team={team} size={22} />
-      <span className="truncate text-sm font-semibold text-ink">{team?.name || "—"}</span>
+      <span className="truncate text-sm font-semibold text-snow">{team?.name || "—"}</span>
     </div>
   );
 }
@@ -208,7 +208,7 @@ function ResultRow({ team, score, win }) {
     <div className="flex items-center justify-between py-0.5">
       <span className="flex items-center gap-2">
         <TeamLogo team={team} size={24} />
-        <span className={`text-sm ${win ? "font-bold text-ink" : "font-medium text-muted"}`}>{team?.name || "—"}</span>
+        <span className={`text-sm ${win ? "font-bold text-snow" : "font-medium text-muted"}`}>{team?.name || "—"}</span>
       </span>
       <span className={`led text-lg ${win ? "text-court" : "text-muted"}`}>{score}</span>
     </div>
