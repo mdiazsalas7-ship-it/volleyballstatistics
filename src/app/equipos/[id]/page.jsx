@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getTeam, getPlayersByTeam, createPlayer, updatePlayer, deletePlayer, deleteTeam } from "@/lib/data";
+import { getTeam, getPlayersByTeam, createPlayer, updatePlayer, deletePlayer, deleteTeam, getAllPlayerStats } from "@/lib/data";
 import { uploadImage } from "@/lib/storage";
+import { addStats, emptyStats } from "@/lib/stats";
 import { ROLES, roleLabel } from "@/lib/roles";
 import { useAuth } from "@/context/AuthContext";
 import { Spinner, Empty } from "@/components/ui";
 import { TeamLogo, PlayerAvatar } from "@/components/media";
 import PhotoInput from "@/components/PhotoInput";
+import PlayerCard from "@/components/PlayerCard";
 import { TeamForm } from "../page";
 
 export default function TeamDetailPage() {
@@ -18,14 +20,24 @@ export default function TeamDetailPage() {
 
   const [team, setTeam] = useState(undefined);
   const [players, setPlayers] = useState([]);
+  const [statsMap, setStatsMap] = useState({});
+  const [selected, setSelected] = useState(null);
   const [showPlayerForm, setShowPlayerForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [editTeam, setEditTeam] = useState(false);
 
   const load = async () => {
-    const [t, p] = await Promise.all([getTeam(id), getPlayersByTeam(id)]);
+    const [t, p, allStats] = await Promise.all([getTeam(id), getPlayersByTeam(id), getAllPlayerStats().catch(() => [])]);
     setTeam(t);
     setPlayers(p.sort((a, b) => (a.number || 0) - (b.number || 0)));
+    // Agrega stats por jugador (con partidos jugados)
+    const map = {};
+    for (const row of allStats) {
+      const pid = row.playerId;
+      if (!map[pid]) map[pid] = { gp: 0, ...emptyStats() };
+      map[pid] = { ...map[pid], ...addStats(map[pid], row), gp: map[pid].gp + 1 };
+    }
+    setStatsMap(map);
   };
 
   useEffect(() => { load(); }, [id]);
@@ -81,7 +93,7 @@ export default function TeamDetailPage() {
       ) : (
         <div className="grid grid-cols-2 gap-3">
           {players.map((p) => (
-            <div key={p.id} className="card overflow-hidden">
+            <button key={p.id} onClick={() => setSelected(p)} className="card overflow-hidden text-left transition active:scale-[0.98]">
               <div className="relative aspect-square bg-surface">
                 {p.photoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -92,20 +104,33 @@ export default function TeamDetailPage() {
                 {p.number != null && (
                   <span className="absolute left-2 top-2 rounded-lg bg-ink/85 px-2.5 py-1 led text-base">#{p.number}</span>
                 )}
+                <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur">
+                  <span className="mi" style={{ fontSize: 12 }}>style</span> Ver
+                </span>
               </div>
               <div className="p-3">
                 <p className="truncate font-bold text-snow">{p.name}</p>
                 <p className="text-xs font-bold uppercase tracking-wide text-court">{roleLabel(p.role)}</p>
                 {isAdmin && (
                   <div className="mt-2 flex gap-1">
-                    <button onClick={() => { setEditing(p); setShowPlayerForm(true); }} className="flex-1 rounded-lg border border-line py-1 text-xs text-muted">Editar</button>
-                    <button onClick={async () => { if (confirm(`¿Eliminar a ${p.name}?`)) { await deletePlayer(p.id); load(); } }} className="rounded-lg border border-line px-2 py-1 text-xs text-coral">✕</button>
+                    <span onClick={(e) => { e.stopPropagation(); setEditing(p); setShowPlayerForm(true); }} className="flex-1 rounded-lg border border-line py-1 text-center text-xs text-muted">Editar</span>
+                    <span onClick={async (e) => { e.stopPropagation(); if (confirm(`¿Eliminar a ${p.name}?`)) { await deletePlayer(p.id); load(); } }} className="rounded-lg border border-line px-2 py-1 text-xs text-coral">✕</span>
                   </div>
                 )}
               </div>
-            </div>
+            </button>
           ))}
         </div>
+      )}
+
+      {selected && (
+        <PlayerCard
+          player={selected}
+          team={team}
+          stats={statsMap[selected.id]}
+          gp={statsMap[selected.id]?.gp || 0}
+          onClose={() => setSelected(null)}
+        />
       )}
     </div>
   );
