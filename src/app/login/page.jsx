@@ -38,6 +38,10 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto max-w-sm space-y-5">
+      <div className="flex flex-col items-center gap-2 pt-4 text-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="" className="h-20 w-20 rounded-2xl object-cover ring-1 ring-line" />
+      </div>
       <PageHeader eyebrow="Acceso" title="Iniciar sesión" />
       <form onSubmit={submit} className="card space-y-3 p-4">
         <label className="block">

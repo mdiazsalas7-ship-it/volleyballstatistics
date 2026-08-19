@@ -73,7 +73,7 @@ function BrandingForm() {
   const branding = useBranding();
   const [name, setName] = useState(branding.leagueName || "");
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(branding.logoUrl || null);
+  const [preview, setPreview] = useState(branding.logoUrl || "/logo.png");
   const [state, setState] = useState("idle");
   const [msg, setMsg] = useState("");
 
@@ -107,10 +107,8 @@ function BrandingForm() {
       </div>
       <div className="flex items-center gap-3">
         <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-line bg-surface">
-          {preview ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={preview} alt="" className="h-full w-full object-cover" />
-          ) : <span className="mi mi-fill text-court" style={{ fontSize: 30 }}>sports_volleyball</span>}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={preview || "/logo.png"} alt="" className="h-full w-full object-cover" />
         </div>
         <label className="btn-ghost cursor-pointer">
           Logo

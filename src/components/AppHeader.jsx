@@ -11,12 +11,13 @@ export default function AppHeader() {
   return (
     <header className="app-header">
       <Link href="/" className="flex min-w-0 items-center gap-2">
-        {logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={logoUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
-        ) : (
-          <span className="mi mi-fill text-amber" style={{ fontSize: 28 }}>sports_volleyball</span>
-        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logoUrl || "/logo.png"}
+          alt=""
+          className="h-8 w-8 rounded-full object-cover ring-1 ring-line"
+          onError={(e) => { e.currentTarget.src = "/logo.png"; }}
+        />
         <span className="h-display truncate text-xl text-amber">{leagueName}</span>
       </Link>
       <Link href={user ? "/cuenta" : "/login"} aria-label="Cuenta" className="shrink-0 text-white/90">

@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { watchBranding } from "@/lib/data";
 
-const DEFAULTS = { leagueName: "Torneo Voley", logoUrl: null };
+const DEFAULTS = { leagueName: "Torneo Voley", logoUrl: "/logo.png" };
 
 const BrandingContext = createContext(DEFAULTS);
 
