@@ -18,17 +18,19 @@ export const STAT_KEYS = [
 ];
 
 // Botones del anotador (mesa técnica). delta puede afectar varios contadores.
+// scores: 'team' (punto para el equipo del jugador), 'opp' (punto para el rival,
+// por un error), o null (no da punto). tone define el color del botón.
 export const ANNOTATOR_ACTIONS = [
-  { key: "kill", label: "Kill", short: "K", tone: "point", icon: "sports_volleyball", apply: { kills: 1, attackAttempts: 1 } },
-  { key: "attackError", label: "Error atq.", short: "AE", tone: "error", icon: "cancel", apply: { attackErrors: 1, attackAttempts: 1 } },
-  { key: "attackIn", label: "Atq. en juego", short: "0", tone: "neutral", icon: "arrow_forward", apply: { attackAttempts: 1 } },
-  { key: "ace", label: "As", short: "SA", tone: "point", icon: "star", apply: { aces: 1 } },
-  { key: "serveError", label: "Error saque", short: "SE", tone: "error", icon: "cancel", apply: { serveErrors: 1 } },
-  { key: "blockSolo", label: "Bloqueo", short: "BS", tone: "point", icon: "shield", apply: { blockSolo: 1 } },
-  { key: "blockAssist", label: "Bloqueo asist.", short: "BA", tone: "point", icon: "front_hand", apply: { blockAssist: 1 } },
-  { key: "dig", label: "Defensa", short: "D", tone: "point", icon: "pan_tool", apply: { digs: 1 } },
-  { key: "assist", label: "Asistencia", short: "A", tone: "point", icon: "handshake", apply: { assists: 1 } },
-  { key: "receptionError", label: "Error recep.", short: "RE", tone: "error", icon: "cancel", apply: { receptionErrors: 1 } },
+  { key: "kill", label: "Kill", short: "K", tone: "point", scores: "team", icon: "sports_volleyball", apply: { kills: 1, attackAttempts: 1 } },
+  { key: "ace", label: "As", short: "SA", tone: "point", scores: "team", icon: "star", apply: { aces: 1 } },
+  { key: "blockSolo", label: "Bloqueo", short: "BS", tone: "point", scores: "team", icon: "shield", apply: { blockSolo: 1 } },
+  { key: "blockAssist", label: "Bloqueo +", short: "BA", tone: "point", scores: "team", icon: "front_hand", apply: { blockAssist: 1 } },
+  { key: "dig", label: "Defensa", short: "D", tone: "good", scores: null, icon: "pan_tool", apply: { digs: 1 } },
+  { key: "assist", label: "Asistencia", short: "A", tone: "good", scores: null, icon: "handshake", apply: { assists: 1 } },
+  { key: "attackIn", label: "Atq. en juego", short: "0", tone: "neutral", scores: null, icon: "arrow_forward", apply: { attackAttempts: 1 } },
+  { key: "attackError", label: "Error atq.", short: "AE", tone: "error", scores: "opp", icon: "cancel", apply: { attackErrors: 1, attackAttempts: 1 } },
+  { key: "serveError", label: "Error saque", short: "SE", tone: "error", scores: "opp", icon: "cancel", apply: { serveErrors: 1 } },
+  { key: "receptionError", label: "Error recep.", short: "RE", tone: "error", scores: "opp", icon: "cancel", apply: { receptionErrors: 1 } },
 ];
 
 export function emptyStats() {
